@@ -1,13 +1,32 @@
-var currentLocation;
+$(document).ready(function () {
+    var currentLocation;
+    $("#chrome").css('visibility','hidden');
 //if statement to check if browser is chrome.
-if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1){
+    if( navigator.userAgent.toLowerCase().indexOf('chrome') > -1 ){
 	// Do something in Chrome
-  
-    load('texas','f');
+	$('#page').css('visibility','hidden'); //hide original UI and request city data
+	$("#chrome").css('visibility','visible');//make temporary UI visible.
+	
+	//listen for enter key press and make api request using user entered value.
+	$(document).keydown(function(e) {
+		currentLocation = $('#city').val();
+		var key = e.which;
+		// validate pressed key
+		if (key == 13) {
+			if (currentLocation == "") {
+				alert("Enter a city name and press the enter key");
+			} 
+			else {
+				load(currentLocation,'f');
+				$("#chrome").remove(); //remove the temporary UI
+				$('#page').css('visibility','visible'); // make original UI visible.
+			}
+		}
+	});
 } 
-//if statement to check if geolocation is supported by browser.
-else if (navigator.geolocation)// if true..then execute 
-{
+    //if statement to check if geolocation is supported by browser.
+    else if (navigator.geolocation)// if true..then execute 
+    {
  navigator.geolocation.getCurrentPosition(function(position)
 	 {
 		 currentLocation=position.coords.latitude+','+position.coords.longitude;
@@ -31,8 +50,8 @@ parameter:location(lat/long,city/country), woeid;
 output:none.
 description:
 */
-function load(location,unit)
-{
+    function load(location,unit)
+    {
 	var update;
 		 $.simpleWeather({			 
 			 location:location,
@@ -81,3 +100,4 @@ function load(location,unit)
 				 error: function(){$("#title p1").html("Error: Please Enable location services in your browser settings");}
 			 }); //just a simple object type manipulation.
 }
+});

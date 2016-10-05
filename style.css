@@ -45,7 +45,9 @@ i {
 	background-color:#CFEEF7;
 	border: 5px solid #F9F6C3;
 }
-
+#chrome{
+	margin-top:10px;
+}
 .icon-0:before { content: ":"; }
 .icon-1:before { content: "p"; }
 .icon-2:before { content: "S"; }
